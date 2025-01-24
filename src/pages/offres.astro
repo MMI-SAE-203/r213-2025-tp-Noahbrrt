@@ -1,4 +1,5 @@
 ---
+import Card from '../components/Card.astro';
 import Base from '../layouts/Base.astro';
 const offres = [
     {
@@ -40,13 +41,25 @@ const offres = [
 <Base titre="Offres">
     <h1 class="text-4xl font-bold text-center text-blue-600 p-4">Liste des Offres</h1>
 
-    <div>
-        <ul>
-            {offres.map((offres) => (
-                <li key={offres.id}>
-                    {offres.nomMaison}
-                </li>
+    <div x-data="{ showFavorites: false }" class="p-4">
+        <button 
+            @click="showFavorites = !showFavorites" 
+            class="bg-blue-600 text-white px-4 py-2 rounded shadow hover:bg-blue-700"
+        >
+            <span x-show="!showFavorites">Afficher les favoris</span>
+            <span x-show="showFavorites">Afficher tout</span>
+        </button>
+
+        <div x-show="!showFavorites" class="flex flex-wrap justify-center mt-4">
+            {offres.map((offre) => (
+                <Card {...offre} />
             ))}
-        </ul>
+        </div>
+
+        <div x-show="showFavorites" class="flex flex-wrap justify-center mt-4">
+            {offres.map((offre) => offre.favori && (
+                <Card {...offre} />
+            ))}
+        </div>
     </div>
 </Base>
