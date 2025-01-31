@@ -13,7 +13,13 @@ records = records.map((maison) => {
 
 return records ;
 }
-
+/*
+export async function allMaisonsFavoris() {
+    let Favoris = await pb.collection('maisons').getFullList({ filter: 'favori = true'
+        }) ;
+        maison.favori = pb.files.getURL(maison, maison.favori);
+    return Favoris ;
+    }
 
 /*
 export async function OneID(id) {
@@ -22,11 +28,7 @@ return oneRecords ;
 }
 
 
-export async function allMaisonsFavoris() {
-const Favoris = await pb.collection('maisons').getFullList({ filter: 'favori = true'
-    }) ;
-return Favoris ;
-}
+
 
 export async function allMaisonsSorted() {
 const Prix = await pb.collection('maisons').getFullList({ sort: 'prix'}
@@ -45,4 +47,3 @@ const SurfaceORPrix = await pb.collection('maisons').getFullList({ filter: `surf
     ) ;
 return SurfaceORPrix ;
 }
-*/
