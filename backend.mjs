@@ -36,7 +36,7 @@ export async function getOffre(id) {
    
 }
 
- /*
+ 
 export async function allMaisonsFavoris() {
     let Favoris = await pb.collection('maisons').getFullList({ filter: 'favori = true'
         }) ;
@@ -70,4 +70,4 @@ const SurfaceORPrix = await pb.collection('maisons').getFullList({ filter: `surf
     ) ;
 return SurfaceORPrix ;
 }
-*/
+
