@@ -4,15 +4,15 @@ const pb = new PocketBase('http://127.0.0.1:8090');
 
 
 export async function allMaisons() {
-    let Favoris = await pb.collection('maisons').getFullList({ 
+    let maisons = await pb.collection('maisons').getFullList({ 
     });
 
-    Favoris = Favoris.map((maison) => {
+    maisons = maisons.map((maison) => {
         maison.imgUrl = pb.files.getURL(maison, maison.images); 
         return maison;
     });
 
-    return Favoris;
+    return maisons;
 }
 
 export async function allMaisonsFavoris() {
@@ -26,6 +26,14 @@ export async function allMaisonsFavoris() {
     });
 
     return Favoris;
+}
+
+export async function getOffre(id) {
+
+        let data = await pb.collection('maisons').getOne(id);
+        data.imageUrl = pb.files.getURL(data, data.images);
+        return data;
+   
 }
 
  /*

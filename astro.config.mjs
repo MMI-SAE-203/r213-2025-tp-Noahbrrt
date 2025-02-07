@@ -8,7 +8,7 @@ import netlify from '@astrojs/netlify';
 import alpinejs from '@astrojs/alpinejs';
 
 // https://astro.build/config
-export default defineConfig({
+export default defineConfig({ output: 'server',
   integrations: [tailwind(), alpinejs()],
   adapter: netlify(),
   experimental: {

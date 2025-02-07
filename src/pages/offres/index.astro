@@ -35,14 +35,14 @@ const offres = await allMaisons();
 
         <div x-show="!showFavorites" :class="viewMode === 'grid' ? 'flex flex-wrap justify-center mt-4' : 'space-y-4'">
             {offres.map((offre) => (
-                <Card {...offre} :class="viewMode === 'grid' ? 'w-1/4 p-2' : 'w-full'" />
+                <Card {...offre} nomMaison={offre.nomMaison} imgUrl={offre.imgUrl} :class="viewMode === 'grid' ? 'w-1/4 p-2' : 'w-full'" />
             ))}
         </div>
 
         <div x-show="showFavorites" :class="viewMode === 'grid' ? 'flex flex-wrap justify-center mt-4' : 'space-y-4'">
             {offres.map((offre) => offre.favori && (
-                <Card {...offre} :class="viewMode === 'grid' ? 'w-1/4 p-2' : 'w-full'" />
+                <Card {...offre} nomMaison={offre.nomMaison} imgUrl={offre.imgUrl} :class="viewMode === 'grid' ? 'w-1/4 p-2' : 'w-full'" />
             ))}
         </div>
     </div>
-</Base>
+</Base> 
