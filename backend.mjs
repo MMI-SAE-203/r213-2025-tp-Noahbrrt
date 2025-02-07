@@ -71,3 +71,12 @@ const SurfaceORPrix = await pb.collection('maisons').getFullList({ filter: `surf
 return SurfaceORPrix ;
 }
 
+export async function byPrix(prix) {
+        let data = await pb.collection('maisons').getFullList({
+            filter: `prix < ${prix}`
+        });
+        data.forEach(maison => {
+            maison.imageUrl = pb.files.getURL(maison, maison.image);
+        });
+        return data;
+}
