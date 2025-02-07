@@ -1,19 +1,34 @@
 import PocketBase from 'pocketbase' ;
-const pb = new PocketBase('http://127.0.0.1:8090') ;
+const pb = new PocketBase('http://127.0.0.1:8090');
 
 
 
 export async function allMaisons() {
-let records = await pb.collection('maisons').getFullList() ;
+    let Favoris = await pb.collection('maisons').getFullList({ 
+    });
 
-records = records.map((maison) => {
-    maison.imgUrl = pb.files.getURL(maison, maison.images);
-    return maison;
-});
+    Favoris = Favoris.map((maison) => {
+        maison.imgUrl = pb.files.getURL(maison, maison.images); 
+        return maison;
+    });
 
-return records ;
+    return Favoris;
 }
-/*
+
+export async function allMaisonsFavoris() {
+    let Favoris = await pb.collection('maisons').getFullList({ 
+        filter: 'favori = true'
+    });
+
+    Favoris = Favoris.map((maison) => {
+        maison.imgUrl = pb.files.getURL(maison, maison.images); 
+        return maison;
+    });
+
+    return Favoris;
+}
+
+ /*
 export async function allMaisonsFavoris() {
     let Favoris = await pb.collection('maisons').getFullList({ filter: 'favori = true'
         }) ;
@@ -21,7 +36,7 @@ export async function allMaisonsFavoris() {
     return Favoris ;
     }
 
-/*
+
 export async function OneID(id) {
 const oneRecords = await pb.collection('maisons').getOne(id) ;
 return oneRecords ;
@@ -47,3 +62,4 @@ const SurfaceORPrix = await pb.collection('maisons').getFullList({ filter: `surf
     ) ;
 return SurfaceORPrix ;
 }
+*/
