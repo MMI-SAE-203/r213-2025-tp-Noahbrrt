@@ -1,11 +1,54 @@
 ---
 import Card from '../../components/Card.astro';
 import Base from '../../layouts/Base.astro';
-import { allMaisons } from '../../../backend.mjs';
-const offres = await allMaisons();
+import { allMaisons, filterByPrix } from '../../../backend.mjs';
+//const offres = await allMaisons();
+
+
+let message = '';
+let offres = [];
+if (Astro.request.method === "POST") {
+    const data = await Astro.request.formData();
+    const minPrix = parseInt(data.get("minPrix"));
+    const maxPrix = parseInt(data.get("maxPrix"));
+
+    if (minPrix > 0 && maxPrix > 0 && maxPrix > minPrix) {
+        offres = await filterByPrix(minPrix, maxPrix);
+		if(offres.length === 0) {
+			message = `Pas d'offres entre ${minPrix}€ et ${maxPrix}€`;
+		} else {
+        	message = `Liste des offres entre ${minPrix}€ et ${maxPrix}€`
+		}
+    } else {
+        message = "Veuillez entrer des valeurs valides pour le prix.";
+        offres = await allMaisons();
+    }
+} else {
+    offres = await allMaisons();
+}
 ---
 
 <Base titre="Offres">
+    <form action="/offres" method="POST" class="space-y-4 p-6 border rounded-lg shadow-lg bg-white w-full sm:w-96 ">
+        <input 
+            type="number" 
+            name="minPrix" 
+            placeholder="Prix minimum"  
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input 
+            type="number" 
+            name="maxPrix" 
+            placeholder="Prix maximum" 
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+        />
+        <input 
+            type="submit" 
+            value="Filtrer par prix" 
+            class="w-full bg-blue-600 text-white py-2 rounded-lg shadow-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+        />
+    </form>
+    
     <h1 class="text-4xl font-bold text-center text-blue-600 p-4">Liste des Offres</h1>
 
     <div x-data="{ showFavorites: false, viewMode: 'grid' }" class="p-4">

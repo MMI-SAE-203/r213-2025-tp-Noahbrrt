@@ -36,15 +36,6 @@ export async function getOffre(id) {
    
 }
 
- 
-export async function allMaisonsFavoris() {
-    let Favoris = await pb.collection('maisons').getFullList({ filter: 'favori = true'
-        }) ;
-        maison.favori = pb.files.getURL(maison, maison.favori);
-    return Favoris ;
-    }
-
-
 export async function OneID(id) {
 const oneRecords = await pb.collection('maisons').getOne(id) ;
 return oneRecords ;
@@ -60,9 +51,16 @@ return Prix ;
 }
 
 export async function bySurface(s) {
-const Surface = await pb.collection('maisons').getFullList({ filter: `surface > ${s}`,}
-    ) ;
-return Surface ;
+    let Surface = await pb.collection('maisons').getFullList({
+        filter: `surface > ${s}`,
+    });
+
+    Surface = Surface.map((Surface) => {
+        Surface.imgUrl = pb.files.getURL(Surface, Surface.images);
+        return Surface;
+    });
+
+    return Surface;
 }
 
 export async function surfaceORprice(s,p) {
@@ -79,4 +77,37 @@ export async function byPrix(prix) {
             maison.imageUrl = pb.files.getURL(maison, maison.image);
         });
         return data;
+}
+
+export async function addOffre(house) {
+    try {
+        await pb.collection('maisons').create(house);
+        return {
+            success: true,
+            message: 'Offre ajoutée avec succès'
+        };
+    } catch (error) {
+        console.log('Une erreur est survenue en ajoutant la maison', error);
+        return {
+            success: false,
+            message: 'Une erreur est survenue en ajoutant la maison'
+        };
+    }
+}
+
+export async function filterByPrix(prixMin, prixMax) {
+    try {
+        let data = await pb.collection('maisons').getFullList({
+            sort: '-created',
+            filter: `prix >= ${prixMin} && prix <= ${prixMax}`
+        });
+        data = data.map((maison) => {
+            maison.imageUrl = pb.files.getURL(maison, maison.images);
+            return maison;
+        });
+        return data;
+    } catch (error) {
+        console.log('Une erreur est survenue en filtrant la liste des maisons', error);
+        return [];
+    }
 }

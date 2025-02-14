@@ -1,0 +1,60 @@
+---
+import Base from '../../layouts/Base.astro';
+import { addOffre } from '../../../backend.mjs';
+
+let message = '';
+if (Astro.request.method === "POST") {
+    const formData = await Astro.request.formData();
+    const response = await addOffre(formData);
+    message = response.message;
+}
+---
+<Base>
+    <h1 class="text-2xl font-bold text-center my-6">Ajouter une offre</h1>
+
+    <div class="max-w-lg mx-auto bg-white shadow-lg rounded-lg p-6">
+        {message && <p class="text-center text-red-500 mb-4">{message}</p>}
+    
+        <form action="/offres/add" method="POST" enctype="multipart/form-data" class="space-y-4">
+            <div>
+                <label for="nomMaison" class="block font-medium text-gray-700">Nom de la maison</label>
+                <input type="text" name="nomMaison" id="nomMaison" placeholder="Nom de la maison" required 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+                <label for="prix" class="block font-medium text-gray-700">Prix (€)</label>
+                <input type="number" name="prix" id="prix" placeholder="Prix" 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+                <label for="nbSdb" class="block font-medium text-gray-700">Nombre de salles de bain</label>
+                <input type="number" name="nbSdb" id="nbSdb" placeholder="Nombre de salles de bain" 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+                <label for="nbChambres" class="block font-medium text-gray-700">Nombre de chambres</label>
+                <input type="number" name="nbChambres" id="nbChambres" placeholder="Nombre de chambres" 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+
+            <div>
+                <label for="surface" class="block font-medium text-gray-700">Superficie (m²)</label>
+                <input type="number" name="surface" id="surface" placeholder="Superficie" 
+                       class="w-full p-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500" />
+            </div>
+            <div>
+                <label for="image" class="block font-medium text-gray-700">Ajouter une image</label>
+                <input type="file" name="image" id="image" 
+                       class="w-full p-2 border border-gray-300 rounded-md bg-gray-50 file:bg-blue-500 file:text-white file:px-3 file:py-2 file:rounded-md file:border-0 hover:file:bg-blue-600" />
+            </div>
+            <button type="submit" 
+                    class="w-full bg-blue-600 text-white py-2 rounded-md text-lg font-medium hover:bg-blue-700 transition">
+                Ajouter
+            </button>
+        </form>
+    </div>
+    
+</Base>
